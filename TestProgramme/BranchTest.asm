@@ -1,5 +1,5 @@
-lui $1 0xffff
-bltz $1, jump
-lui $1 2
-jump:
-lui $2 1
+addiu $1, $0, 22325589
+addiu $2, $0, 22325589
+multu $1, $2
+mfhi $4
+mflo $3

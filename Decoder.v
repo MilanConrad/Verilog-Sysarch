@@ -38,7 +38,7 @@ module Decoder(
 						6'b101011: alucontrol = 3'b111; 	 //  set-less-than unsigned
 						6'b011001: alucontrol = 3'b011;   //  Multiply unsigned
 						6'b010000: alucontrol = 3'b100;   //  Move from HI
-						6'b010000: alucontrol = 3'b101;   //  Move from LO
+						6'b010010: alucontrol = 3'b101;   //  Move from LO
 						default:   alucontrol = 3'bxxx;	   //  undefiniert
 					endcase
 				end
