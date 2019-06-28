@@ -15,7 +15,7 @@ module ProcessorTestbench();
 			$dumpfile("simres.vcd");
 			$dumpvars(0, ProcessorTestbench);
 
-		
+
 			/* initialize actual and expected registers to 0xcafebabe */
 			for(i=1; i<32; i=i+1) begin
 				proc.mips.dp.gpr.registers[i] = 32'hcafebabe;
@@ -27,8 +27,13 @@ module ProcessorTestbench();
 //			$readmemh("TestProgramme/Fibonacci.expected", expectedRegContent);
 //			$readmemh("TestProgramme/Funktionsaufruf.dat", proc.imem.INSTRROM, 0, 4);
 //			$readmemh("TestProgramme/Funktionsaufruf.expected", expectedRegContent);
-			$readmemh("TestProgramme/Konstanten.dat", proc.imem.INSTRROM, 0, 2);
-			$readmemh("TestProgramme/Konstanten.expected", expectedRegContent);
+//			$readmemh("TestProgramme/Konstanten.dat", proc.imem.INSTRROM, 0, 2);
+//			$readmemh("TestProgramme/Konstanten.expected", expectedRegContent);
+
+			//Branch less than zero test
+			$readmemh("TestProgramme/BranchTest.dat", proc.imem.INSTRROM, 0, 2);
+			$readmemh("TestProgramme/BranchTest.expected", expectedRegContent);
+
 //			$readmemh("TestProgramme/Multiplikation.dat", proc.imem.INSTRROM, 0, 4);
 //			$readmemh("TestProgramme/Multiplikation.expected", expectedRegContent);
 

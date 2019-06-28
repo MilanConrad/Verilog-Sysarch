@@ -136,13 +136,14 @@ module Decoder(
 				memwrite = 1 ;
 				alucontrol = 3'b001;
 				end
-			6'b000111: // Branch on greater than or equal to zero and link
+			6'b000001: // Branch on less than or equal to zero and link
 				begin
-				regwrite = 1;
+				regwrite = 0;
 				destreg = 5'bx;
 				dobranch = ~zero;
 				lui = 0;
 				dojump = 0;
+				dobranch = 1;
 				alucontrol = 3'b111; // a = First operand, b = 0: 1 if a < 0, 0 else
 				alusrcbimm = 0;
 				memwrite = 0;

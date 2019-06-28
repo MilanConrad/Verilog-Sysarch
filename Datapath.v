@@ -176,9 +176,9 @@ case (alucontrol)
  7: begin
 
 		if (a<b) begin
-		result <= 32'b00000000000000000000000000000000;
-		end else begin
 		result <= 32'b00000000000000000000000000000001;
+		end else begin
+		result <= 32'b00000000000000000000000000000000;
 		end
 		end
 
