@@ -1,5 +1,5 @@
 lui $1 1
 bltz $1, jump
-sw $1 1
+lui $1 2
 jump:
-sw $1 2
+lui $1 1

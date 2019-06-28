@@ -17,7 +17,7 @@ module DataMemory(
 	output [31:0] rd
 );
 	reg [31:0] DATARAM[63:0];
-
+	
 	always @(posedge clk)
 		if (we) begin
 			DATARAM[addr] <= wd;
@@ -25,4 +25,3 @@ module DataMemory(
 
 	assign rd = DATARAM[addr];
 endmodule
-

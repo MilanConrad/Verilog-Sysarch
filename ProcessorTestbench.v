@@ -31,7 +31,7 @@ module ProcessorTestbench();
 //			$readmemh("TestProgramme/Konstanten.expected", expectedRegContent);
 
 			//Branch less than zero test
-			$readmemh("TestProgramme/BranchTest.dat", proc.imem.INSTRROM, 0, 2);
+			$readmemh("TestProgramme/BranchTest.dat", proc.imem.INSTRROM, 0, 3);
 			$readmemh("TestProgramme/BranchTest.expected", expectedRegContent);
 
 //			$readmemh("TestProgramme/Multiplikation.dat", proc.imem.INSTRROM, 0, 4);
