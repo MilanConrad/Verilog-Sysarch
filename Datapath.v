@@ -156,7 +156,10 @@ case (alucontrol)
 
  0: result = a & b ;
  1: result = a | b ;
- 2: result = a + b ;
+ 2: begin
+ 		result = a + b ;
+		$monitor("Content of a: %b \t Content of b: %b \t Content of Result: %b",a,b,result);
+		end
  3: begin
  		temp <= (0 || a) * (0 || b);
 		hi <= temp[61:32];
