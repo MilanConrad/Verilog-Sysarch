@@ -145,7 +145,7 @@ module ArithmeticLogicUnit(
 );
  reg[31:0] lo;
  reg[31:0] hi;
- reg [61:0] temp;
+ reg [66:0] temp;
  reg result;
  reg zero;
 	//ALU
@@ -158,13 +158,13 @@ case (alucontrol)
  1: result = a | b ;
  2: result = a + b ;
  3: begin
- 		temp <= (0 || a) * (0 || b);
-		hi <= temp[61:32];
-		lo <= temp[31:0];
+ 		temp = (0 || a) * (0 || b);
+		hi = temp[63:32];
+		lo = temp[31:0];
 		end
- 4: result <= hi ;
- 5: result <= lo ;
- 6: result <= a - b ;
+ 4: result = hi ;
+ 5: result = lo ;
+ 6: result = a - b ;
 
  7: begin
 
