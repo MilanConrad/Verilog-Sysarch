@@ -54,7 +54,7 @@ module Decoder(
 					dojump = 0;
 					lui = 0;
 					OrImm = 0;
-					alucontrol = 3'b010;// TODO // Addition effektive Adresse: Basisregister + Offset
+					alucontrol = 3'b010; // TODO // Addition effektive Adresse: Basisregister + Offset
 				end
 			6'b000100: // Branch Equal
 				begin
