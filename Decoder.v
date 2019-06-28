@@ -65,7 +65,7 @@ module Decoder(
 					memwrite = 0;
 					memtoreg = 0;
 					dojump = 0;
-							lui = 0;
+					lui = 0;
 					OrImm = 0;
 					alucontrol = 3'b110;// TODO // Subtraktion
 				end
@@ -78,7 +78,7 @@ module Decoder(
 					memwrite = 0;
 					memtoreg = 0;
 					dojump = 0;
-							lui = 0;
+					lui = 0;
 					OrImm = 0;
 					alucontrol = 3'b010;    // TODO // Addition
 				end
@@ -121,6 +121,7 @@ module Decoder(
 				memtoreg = 0;
 				OrImm = 0;
 				memwrite = 0;
+				alucontrol = 3'b001;
 				end
 		  6'b001101: // Bitwise or immediate
 				begin
@@ -133,6 +134,7 @@ module Decoder(
 				OrImm = 0;
 				lui = 0;
 				memwrite = 1 ;
+				alucontrol = 3'b001;
 				end
 			6'b000111: // Branch on greater than or equal to zero and link
 				begin

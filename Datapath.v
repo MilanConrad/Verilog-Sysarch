@@ -86,6 +86,10 @@ module RegisterFile(
 );
 	reg [31:0] registers[31:0];
 
+	initial begin
+		$monitor("Content register 1: %b \t ",registers[1]);
+	end
+
 	always @(posedge clk)
 		if (we3) begin
 			registers[wa3] <= wd3;
@@ -116,7 +120,7 @@ reg [31:0] out;
 
 initial begin
 //$display("%d",y);
-$monitor("%b\t%b\t%b\t%b",a,y,OrImm,lui);
+$monitor("Content of a: %b\tContent of y: %b\tOrImm: %b\t lui: %b",a,y,OrImm,lui);
 end
 
 always @*
@@ -137,7 +141,6 @@ assign y = out;
 
 endmodule
 
-
 module ArithmeticLogicUnit(
 	input  [31:0] a, b,
 	input  [2:0]  alucontrol,
@@ -150,16 +153,17 @@ module ArithmeticLogicUnit(
  reg result;
  reg zero;
 	//ALU
+
 always @* begin
 
 case (alucontrol)
 
  0: result = a & b ;
  1: result = a | b ;
- 2: begin
- 		result = a + b ;
-		$monitor("Content of a: %b \t Content of b: %b \t Content of Result: %b",a,b,result);
-		end
+ 2:  begin
+ 	result = a + b ;
+ 	$monitor("Content of a: %b \t Content of b: %b \t Content of Result: %b",a,b,result);
+ 	   end
  3: begin
  		temp <= (0 || a) * (0 || b);
 		hi <= temp[61:32];
