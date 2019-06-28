@@ -149,7 +149,7 @@ module ArithmeticLogicUnit(
  reg [61:0] temp;
  reg result;
  reg zero;
-
+	//ALU
 always @* begin
 
 case (alucontrol)
