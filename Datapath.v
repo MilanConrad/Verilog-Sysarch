@@ -86,10 +86,6 @@ module RegisterFile(
 );
 	reg [31:0] registers[31:0];
 
-	initial begin
-//		$monitor("Content register 1: %b \t ",registers[1]);
-	end
-
 	always @(posedge clk)
 		if (we3) begin
 			registers[wa3] <= wd3;
@@ -172,7 +168,7 @@ case (alucontrol)
 
  7: begin
 
-		if (a<b) begin
+		if ($signed(a)<$signed(b)) begin
 		result <= 32'b00000000000000000000000000000001;
 		end else begin
 		result <= 32'b00000000000000000000000000000000;

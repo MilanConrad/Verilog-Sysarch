@@ -1,5 +1,5 @@
-lui $1 1
+lui $1 0xffff
 bltz $1, jump
 lui $1 2
 jump:
-lui $1 1
+lui $2 1

@@ -90,7 +90,7 @@ module Decoder(
 						alusrcbimm = 1;
 						dobranch = 0;
 						memwrite = 0;
-								lui = 0;
+						lui = 0;
 						memtoreg = 0;
 						dojump = 0;
 						OrImm = 1;
@@ -143,7 +143,6 @@ module Decoder(
 				dobranch = ~zero;
 				lui = 0;
 				dojump = 0;
-				dobranch = 1;
 				alucontrol = 3'b111; // a = First operand, b = 0: 1 if a < 0, 0 else
 				alusrcbimm = 0;
 				memwrite = 0;
