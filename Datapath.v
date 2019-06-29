@@ -14,15 +14,17 @@ module Datapath(
 	output [31:0] writedata,
 	input  [31:0] readdata,
 	input OrImm,
-	input lui
+	input lui,
+	input dojal
 );
 	wire [31:0] pc;
 	wire [31:0] signimm;
 	wire [31:0] srca, srcb, srcbimm;
 	wire [31:0] result;
+	wire [31:0] newpc,pcresult;
 
 	// Fetch: Reiche PC an Instruktionsspeicher weiter und update PC
-	ProgramCounter pcenv(clk, reset, dobranch, signimm, jump, instr[25:0], pc);
+	ProgramCounter pcenv(clk, reset, dobranch, signimm, jump,dojal, instr[25:0], pc,pcresult);
 
 	// Execute:
 	// (a) Wähle Operanden aus
@@ -38,7 +40,7 @@ module Datapath(
 
 	// Write-Back: Stelle Operanden bereit und schreibe das jeweilige Resultat zurück
 	RegisterFile gpr(clk, regwrite, instr[25:21], instr[20:16],
-	               destreg, result, srca, srcb);
+	               destreg, result, pcresult,srca, srcb);
 endmodule
 
 module ProgramCounter(
@@ -47,14 +49,21 @@ module ProgramCounter(
 	input         dobranch,
 	input  [31:0] branchoffset,
 	input         dojump,
+	input         dojal,
 	input  [25:0] jumptarget,
-	output [31:0] progcounter
+	output [31:0] progcounter,
+	output [31:0] pcresult
 );
 	reg  [31:0] pc;
 	wire [31:0] incpc, branchpc, nextpc;
 
+
+
 	// Inkrementiere Befehlszähler um 4 (word-aligned)
 	Adder pcinc(.a(pc), .b(32'b100), .cin(1'b0), .y(incpc));
+
+	assign pcresult = dojal ? incpc : 0;
+
 	// Berechne mögliches (PC-relatives) Sprungziel
 	Adder pcbranch(.a(incpc), .b({branchoffset[29:0], 2'b00}), .cin(1'b0), .y(branchpc));
 	// Wähle den nächsten Wert des Befehlszählers aus
@@ -82,9 +91,13 @@ module RegisterFile(
 	input         we3,
 	input  [4:0]  ra1, ra2, wa3,
 	input  [31:0] wd3,
+	input [31:0] newpc,
 	output [31:0] rd1, rd2
 );
 	reg [31:0] registers[31:0];
+
+
+
 
 	initial begin
 		$monitor("Reg 1: %b \t Reg 2 : %b \t Reg 3 : %b \t Reg 4 : %b \t",registers[1],registers[2],registers[3],registers[4]);
@@ -92,7 +105,7 @@ module RegisterFile(
 
 	always @(posedge clk)
 		if (we3) begin
-			registers[wa3] <= wd3;
+			registers[wa3] <= (newpc==0) ? wd3 : newpc;
 		end
 
 	assign rd1 = (ra1 != 0) ? registers[ra1] : 0;
@@ -148,9 +161,6 @@ module ArithmeticLogicUnit(
  reg result;
  reg zero;
 	//ALU
-
-
-
 
 always @* begin
 

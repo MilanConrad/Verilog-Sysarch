@@ -34,8 +34,8 @@ module ProcessorTestbench();
 //			$readmemh("TestProgramme/BranchTest.dat", proc.imem.INSTRROM, 0, 3);
 //			$readmemh("TestProgramme/BranchTest.expected", expectedRegContent);
 
-			$readmemh("TestProgramme/Multiplikation.dat", proc.imem.INSTRROM, 0, 4);
-			$readmemh("TestProgramme/Multiplikation.expected", expectedRegContent);
+			//$readmemh("TestProgramme/Multiplikation.dat", proc.imem.INSTRROM, 0, 4);
+			//$readmemh("TestProgramme/Multiplikation.expected", expectedRegContent);
 
 			// Generiere reset-Eingabe
 			reset <= 1;

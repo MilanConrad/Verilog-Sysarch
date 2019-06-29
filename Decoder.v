@@ -10,7 +10,8 @@ module Decoder(
 	output reg       dojump,     // Führe einen absoluten Sprung aus
 	output reg [2:0] alucontrol,
 	output reg OrImm,  // ALU-Kontroll-Bits
-	output reg lui
+	output reg lui,
+	output reg dojal
 );
 	// Extrahiere primären und sekundären Operationcode
 	wire [5:0] op = instr[31:26];
@@ -21,6 +22,7 @@ module Decoder(
 		case (op)
 			6'b000000: // Rtype Instruktion
 				begin
+				  dojal = 0;
 					regwrite = 1;
 					destreg = instr[15:11];
 					alusrcbimm = 0;
@@ -31,6 +33,7 @@ module Decoder(
 					OrImm = 0;
 					lui = 0;
 					case (funct)
+//					  6'b001000: alucontrol = 3'
 						6'b100001: alucontrol = 3'b010;   //  Addition unsigned
 						6'b100011: alucontrol = 3'b110;	 //  Subtraktion unsigned
 						6'b100100: alucontrol = 3'b000;	 //  and
@@ -45,6 +48,7 @@ module Decoder(
 			6'b100011, // Lade Datenwort aus Speicher
 			6'b101011: // Speichere Datenwort
 				begin
+				  dojal = 0;
 					regwrite = ~op[3];
 					destreg = instr[20:16];
 					alusrcbimm = 1;
@@ -58,6 +62,7 @@ module Decoder(
 				end
 			6'b000100: // Branch Equal
 				begin
+					dojal = 0;
 					regwrite = 0;
 					destreg = 5'bx;
 					alusrcbimm = 0;
@@ -71,6 +76,7 @@ module Decoder(
 				end
 			6'b001001:     // Addition immediate unsigned
 				begin
+				  dojal = 0;
 					regwrite = 1;
 					destreg = instr[20:16];
 					alusrcbimm = 1;
@@ -85,6 +91,7 @@ module Decoder(
 
 				6'b001101:     // Ori immediate unsigned
 					begin
+						dojal = 0;
 						regwrite = 1;
 						destreg = instr[20:16];
 						alusrcbimm = 1;
@@ -98,6 +105,7 @@ module Decoder(
 					end
 			6'b000010: // Jump immediate
 				begin
+				  dojal = 0;
 					regwrite = 0;
 					destreg = 5'bx;
 					alusrcbimm = 0;
@@ -112,6 +120,7 @@ module Decoder(
 				end
 			6'b001111: // Load upper immediate
 			 	begin
+				dojal = 0;
 				regwrite = 1 ;
 				destreg = instr[20:16] ;
 				dobranch = 0 ;
@@ -125,6 +134,7 @@ module Decoder(
 				end
 		  6'b001101: // Bitwise or immediate
 				begin
+				dojal = 0;
 				regwrite = 1;
 				destreg = instr[20:16] ;
 				dobranch = 0 ;
@@ -138,6 +148,7 @@ module Decoder(
 				end
 			6'b000001: // Branch on less than or equal to zero and link
 				begin
+				dojal = 0;
 				regwrite = 0;
 				destreg = 5'bx;
 				dobranch = ~zero;
@@ -151,21 +162,21 @@ module Decoder(
 				end
 			6'b000011:  // Jump and link
 				begin
+				dojal = 1;
 				destreg = 5'b11111;
-				dobranch = 1;
-
-
-				// TODO
-
+				dobranch = 0;
+				lui = 0;
+				dojump = 1;
+				alucontrol = 3'bx;
+				alusrcbimm = 0;
+				memwrite = 0;
+				OrImm = 0;
+				memtoreg = 0;
 				end
-			6'b000000:
-			begin
 
-			// TODO
-
-			end
 			default: // Default Fall
 				begin
+				dojal = 0;
 				regwrite = 1'bx;
 				destreg = 5'bx;
 				alusrcbimm = 1'bx;
