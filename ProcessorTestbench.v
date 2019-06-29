@@ -25,8 +25,8 @@ module ProcessorTestbench();
 			// Lese auszuführendes Programm ein
 //			$readmemh("TestProgramme/Fibonacci.dat", proc.imem.INSTRROM, 0, 5);
 //			$readmemh("TestProgramme/Fibonacci.expected", expectedRegContent);
-//			$readmemh("TestProgramme/Funktionsaufruf.dat", proc.imem.INSTRROM, 0, 4);
-//			$readmemh("TestProgramme/Funktionsaufruf.expected", expectedRegContent);
+			$readmemh("TestProgramme/Funktionsaufruf0.dat", proc.imem.INSTRROM, 0, 3);
+			$readmemh("TestProgramme/Funktionsaufruf0.expected", expectedRegContent);
 //			$readmemh("TestProgramme/Konstanten.dat", proc.imem.INSTRROM, 0, 2);
 //			$readmemh("TestProgramme/Konstanten.expected", expectedRegContent);
 
@@ -42,9 +42,9 @@ module ProcessorTestbench();
 			#5; reset <= 0;
 			// Anzahl simulierter Zyklen
 //			#117; // Fibonacci
-//			#20; // Funktionsaufruf
+			#20; // Funktionsaufruf
 //			#16; // Konstanten
-			#24; // Multiplikation
+//			#24; // Multiplikation
 
 			for(i=1; i<32; i=i+1) begin
 				$display("Register %d = %h", i, proc.mips.dp.gpr.registers[i]);

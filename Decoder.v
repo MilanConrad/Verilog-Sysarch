@@ -163,6 +163,7 @@ module Decoder(
 			6'b000011:  // Jump and link
 				begin
 				dojal = 1;
+				regwrite = 1;
 				destreg = 5'b11111;
 				dobranch = 0;
 				lui = 0;
