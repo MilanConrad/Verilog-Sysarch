@@ -86,6 +86,10 @@ module RegisterFile(
 );
 	reg [31:0] registers[31:0];
 
+	initial begin
+		$monitor("Reg 1: %b \t Reg 2 : %b \t Reg 3 : %b \t Reg 4 : %b \t",registers[1],registers[2],registers[3],registers[4]);
+	end
+
 	always @(posedge clk)
 		if (we3) begin
 			registers[wa3] <= wd3;
@@ -114,11 +118,6 @@ module SignExtension(
 
 reg [31:0] out;
 
-initial begin
-//$display("%d",y);
-$monitor("Content of a: %b\tContent of y: %b\tOrImm: %b\t lui: %b",a,y,OrImm,lui);
-end
-
 always @*
 begin
 
@@ -145,7 +144,7 @@ module ArithmeticLogicUnit(
 );
  reg[31:0] lo;
  reg[31:0] hi;
- reg [66:0] temp;
+ reg [64:0] temp;
  reg result;
  reg zero;
 	//ALU

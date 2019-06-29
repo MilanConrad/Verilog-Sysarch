@@ -43,8 +43,8 @@ module ProcessorTestbench();
 			// Anzahl simulierter Zyklen
 //			#117; // Fibonacci
 //			#20; // Funktionsaufruf
-			#16; // Konstanten
-//			#24; // Multiplikation
+//			#16; // Konstanten
+			#24; // Multiplikation
 
 			for(i=1; i<32; i=i+1) begin
 				$display("Register %d = %h", i, proc.mips.dp.gpr.registers[i]);
