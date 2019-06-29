@@ -151,6 +151,8 @@ module ArithmeticLogicUnit(
 	//ALU
 
 
+
+
 always @* begin
 
 case (alucontrol)
@@ -158,11 +160,8 @@ case (alucontrol)
  0: result = a & b ;
  1: result = a | b ;
  2: result = a + b ;
- 3: begin
- 		temp = {{1'b0},a} * {{1'b0},b};
-		hi =  temp[63:32];
-	  lo = temp[31:0];
-		end
+
+ 3: begin temp = {{1'b0},a} * {{1'b0},b}; lo = temp[31:0];hi = temp[63:32]; end
  4: result = hi ;
  5: result = lo ;
  6: result = a - b ;
