@@ -15,16 +15,17 @@ module Datapath(
 	input  [31:0] readdata,
 	input OrImm,
 	input lui,
-	input dojal
+	input dojal,
+	input jr
 );
 	wire [31:0] pc;
 	wire [31:0] signimm;
 	wire [31:0] srca, srcb, srcbimm;
 	wire [31:0] result;
-	wire [31:0] newpc,pcresult;
+	wire [31:0] newpc,pcresult,rAddress;
 
 	// Fetch: Reiche PC an Instruktionsspeicher weiter und update PC
-	ProgramCounter pcenv(clk, reset, dobranch, signimm, jump,dojal, instr[25:0], pc,pcresult);
+	ProgramCounter pcenv(clk, reset, dobranch, signimm, jump,dojal,jr,rAddress, instr[25:0], pc,pcresult);
 
 	// Execute:
 	// (a) Wähle Operanden aus
@@ -40,7 +41,7 @@ module Datapath(
 
 	// Write-Back: Stelle Operanden bereit und schreibe das jeweilige Resultat zurück
 	RegisterFile gpr(clk, regwrite, instr[25:21], instr[20:16],
-	               destreg, result, pcresult,srca, srcb);
+	               destreg, result, pcresult,srca, srcb,rAddress);
 endmodule
 
 module ProgramCounter(
@@ -50,6 +51,8 @@ module ProgramCounter(
 	input  [31:0] branchoffset,
 	input         dojump,
 	input         dojal,
+	input 				jr,
+	input  [31:0] rAddress,
 	input  [25:0] jumptarget,
 	output [31:0] progcounter,
 	output [31:0] pcresult
@@ -77,7 +80,8 @@ module ProgramCounter(
 		if (reset) begin // Initialisierung mit Adresse 0x00400000
 			pc <= 'h00400000;
 		end else begin
-			pc <= nextpc;
+			//pc <= nextpc;
+			pc <= jr ? rAddress : nextpc;
 		end
 	end
 
@@ -92,7 +96,7 @@ module RegisterFile(
 	input  [4:0]  ra1, ra2, wa3,
 	input  [31:0] wd3,
 	input [31:0] newpc,
-	output [31:0] rd1, rd2
+	output [31:0] rd1, rd2,rd3
 );
 	reg [31:0] registers[31:0];
 
@@ -110,6 +114,8 @@ module RegisterFile(
 
 	assign rd1 = (ra1 != 0) ? registers[ra1] : 0;
 	assign rd2 = (ra2 != 0) ? registers[ra2] : 0;
+	assign rd3 = (ra1 != 0) ? registers[ra1] : 0;
+
 endmodule
 
 module Adder(

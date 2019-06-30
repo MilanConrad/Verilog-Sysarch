@@ -11,7 +11,8 @@ module Decoder(
 	output reg [2:0] alucontrol,
 	output reg OrImm,  // ALU-Kontroll-Bits
 	output reg lui,
-	output reg dojal
+	output reg dojal,
+	output reg jr
 );
 	// Extrahiere primären und sekundären Operationcode
 	wire [5:0] op = instr[31:26];
@@ -32,6 +33,7 @@ module Decoder(
 					dojump = 0;
 					OrImm = 0;
 					lui = 0;
+					jr=0;
 					case (funct)
 //					  6'b001000: alucontrol = 3'
 						6'b100001: alucontrol = 3'b010;   //  Addition unsigned
@@ -42,6 +44,7 @@ module Decoder(
 						6'b011001: alucontrol = 3'b011;   //  Multiply unsigned
 						6'b010000: alucontrol = 3'b100;   //  Move from HI
 						6'b010010: alucontrol = 3'b101;   //  Move from LO
+						6'b001000: begin alucontrol = 3'bxxx; jr=1; end  //  jr
 						default:   alucontrol = 3'bxxx;	   //  undefiniert
 					endcase
 				end
@@ -58,6 +61,7 @@ module Decoder(
 					dojump = 0;
 					lui = 0;
 					OrImm = 0;
+					jr=0;
 					alucontrol = 3'b010; // TODO // Addition effektive Adresse: Basisregister + Offset
 				end
 			6'b000100: // Branch Equal
@@ -71,6 +75,7 @@ module Decoder(
 					memtoreg = 0;
 					dojump = 0;
 					lui = 0;
+					jr=0;
 					OrImm = 0;
 					alucontrol = 3'b110;// TODO // Subtraktion
 				end
@@ -85,6 +90,7 @@ module Decoder(
 					memtoreg = 0;
 					dojump = 0;
 					lui = 0;
+					jr=0;
 					OrImm = 0;
 					alucontrol = 3'b010;    // TODO // Addition
 				end
@@ -99,6 +105,7 @@ module Decoder(
 						memwrite = 0;
 						lui = 0;
 						memtoreg = 0;
+						jr=0;
 						dojump = 0;
 						OrImm = 1;
 						alucontrol = 3'b001;    // TODO // Addition
@@ -112,6 +119,7 @@ module Decoder(
 					dobranch = 0;
 					memwrite = 0;
 					lui = 0;
+					jr=0;
 					memtoreg = 0;
 					dojump = 1;
 					OrImm = 0;
@@ -127,6 +135,7 @@ module Decoder(
 				dojump = 0 ;
 				lui = 1;
 				alusrcbimm = 1;
+				jr=0;
 				memtoreg = 0;
 				OrImm = 0;
 				memwrite = 0;
@@ -140,6 +149,7 @@ module Decoder(
 				dobranch = 0 ;
 				dojump = 0;
 				alusrcbimm = 1 ;
+				jr=0;
 				memtoreg = 0 ;
 				OrImm = 0;
 				lui = 0;
@@ -154,6 +164,7 @@ module Decoder(
 				dobranch = ~zero;
 				lui = 0;
 				dojump = 0;
+				jr=0;
 				alucontrol = 3'b111; // a = First operand, b = 0: 1 if a < 0, 0 else
 				alusrcbimm = 0;
 				memwrite = 0;
@@ -167,6 +178,7 @@ module Decoder(
 				destreg = 5'b11111;
 				dobranch = 0;
 				lui = 0;
+				jr=0;
 				dojump = 1;
 				alucontrol = 3'bx;
 				alusrcbimm = 0;
@@ -178,6 +190,7 @@ module Decoder(
 			default: // Default Fall
 				begin
 				dojal = 0;
+				jr=1'bx;
 				regwrite = 1'bx;
 				destreg = 5'bx;
 				alusrcbimm = 1'bx;

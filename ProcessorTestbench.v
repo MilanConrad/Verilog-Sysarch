@@ -23,10 +23,10 @@ module ProcessorTestbench();
 			end
 
 			// Lese auszuführendes Programm ein
-//			$readmemh("TestProgramme/Fibonacci.dat", proc.imem.INSTRROM, 0, 5);
-//			$readmemh("TestProgramme/Fibonacci.expected", expectedRegContent);
-			$readmemh("TestProgramme/Funktionsaufruf0.dat", proc.imem.INSTRROM, 0, 3);
-			$readmemh("TestProgramme/Funktionsaufruf0.expected", expectedRegContent);
+			$readmemh("TestProgramme/Fibonacci.dat", proc.imem.INSTRROM, 0, 5);
+			$readmemh("TestProgramme/Fibonacci.expected", expectedRegContent);
+//			$readmemh("TestProgramme/Funktionsaufruf.dat", proc.imem.INSTRROM, 0, 4);
+//			$readmemh("TestProgramme/Funktionsaufruf.expected", expectedRegContent);
 //			$readmemh("TestProgramme/Konstanten.dat", proc.imem.INSTRROM, 0, 2);
 //			$readmemh("TestProgramme/Konstanten.expected", expectedRegContent);
 
@@ -41,8 +41,8 @@ module ProcessorTestbench();
 			reset <= 1;
 			#5; reset <= 0;
 			// Anzahl simulierter Zyklen
-//			#117; // Fibonacci
-			#20; // Funktionsaufruf
+			#117; // Fibonacci
+//			#20; // Funktionsaufruf
 //			#16; // Konstanten
 //			#24; // Multiplikation
 
